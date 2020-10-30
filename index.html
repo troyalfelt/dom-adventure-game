@@ -10,11 +10,194 @@
   </head>
   <body>
     <main id="game">
-      <!-- 
-        You have two options:
-        1. Write HTML within this <main> element and manipulate it in the JS
-        2. Or handle everything within the JS
-      -->
+<script>
+  const first = document.querySelector('#game');
+
+  const main = document.createElement('main');
+  const p = document.createElement('p');
+  main.textContent = 'You awake in a dimly lit room. With a door to your north and south or Up and down which do you choose. Use arrow keys';
+
+
+  first.appendChild(main);
+
+  function arrow1 (event){
+    if(event.key =='ArrowUp') {
+
+      main.textContent = " You see a bear in the room. It's sitting in front of another door eating from a pot of honey. How are you going to move the bear?";
+      first.appendChild(main);
+      document.body.removeEventListener('keydown', arrow1);
+      let button = document.createElement("BUTTON");
+      button.innerHTML = "Take honey";
+      first.appendChild(button);
+      let buttons = document.createElement("BUTTON")
+      buttons.innerHTML = "Taunt bear";
+      first.appendChild(buttons);
+      let Buttons = document.createElement("BUTTON")
+      Buttons.innerHTML = "Do nothing";
+      first.appendChild(Buttons);
+
+       const button1 = document.querySelector("BUTTON");
+
+       button.addEventListener('click', event => {
+         main.textContent = "Bad call. The angry bear slaps you into the honey pot. You got transported into the bears honeypot. Everything is made of honey. What will you do?"
+         first.appendChild(main);
+         buttons.parentNode.removeChild(buttons);
+         button.parentNode.removeChild(button);
+         Buttons.parentNode.removeChild(Buttons);
+
+         p.textContent = " Use e for eat and d for dig"
+         first.appendChild(p);
+         function key1(event) {
+         if (event.key == 'e'){
+           main.textContent = "You got too full and couldn't escape. You have died refresh to play again.";
+           first.appendChild(main);
+           p.parentNode.removeChild(p);
+          document.body.removeEventListener('keydown', key1);
+         }else if (event.key == 'd'){
+           main.textContent = 'Congratulations you found the exit out of the honey pot. You come across a room with three doors A red one, a orange one, and a blue one. What door do you choose.';
+           first.appendChild(main);
+           p.textContent = 'use r for red, use o for orange, and use b for blue.';
+          document.body.removeEventListener('keydown', key1);
+          }
+};
+
+          function key2(event) {
+            if(event.key == 'r'){
+              main.textContent = 'You open the door and fall straight into lava. Refresh to try again.';
+              first.appendChild(main)
+              p.parentNode.removeChild(p);
+              document.body.removeEventListener('keydown', key2);
+            }
+            else if(event.key == 'o'){
+              main.textContent = 'You open the door and fall into an endless ocean. You are in the middle of the ocean what will you do?';
+              first.appendChild(main);
+              p.parentNode.removeChild(p);
+              document.body.removeEventListener('keydown', key2);
+            }
+            else if(event.key == 'b'){
+              main.textContent = 'You found the correct door you can go to the gold room. This room has a big pile of gold. How much do you take?';
+              first.appendChild(main);
+              document.body.removeEventListener('keydown', key2);
+              p.parentNode.removeChild(p);
+
+              let number1 = document.createElement('INPUT');
+              number1.setAttribute("type", "number");
+              number1.setAttribute("value", "1");
+              first.appendChild(number1)
+              let submit1 = document.createElement('INPUT');
+              submit1.setAttribute("type", "Submit");
+              submit1.setAttribute("value", "Submit Number");
+              first.appendChild(submit1);
+
+              submit1.addEventListener('click', event => {
+                if(number1.value > 100){
+                  main.textContent = "You took too much and couldn't carry it, unable to escape. Refresh to try again.";
+                  main.appendChild(submit1)
+                  submit1.parentNode.removeChild(submit1);
+                  number1.parentNode.removeChild(number1);
+                }
+                else if (number1.value <= 100){
+                  main.textContent = 'Hurray! You won and made it out of this game!';
+                  main.appendChild(submit1);
+                  submit1.parentNode.removeChild(submit1);
+                  number1.parentNode.removeChild(number1);
+                }
+              });
+               }
+
+
+
+
+};
+
+document.body.addEventListener('keydown',key2);
+document.body.addEventListener('keydown', key1);
+       });
+       const button2 = document.querySelector("BUTTON");
+
+       buttons.addEventListener('click', event => {
+         main.textContent = "The bear moved you move past the bear through the door. You come to a room with a statue and it says: Guess my name or die. The hint is his name is the first letter of five consecutive months."
+         first.appendChild(main);
+         buttons.parentNode.removeChild(buttons);
+         button.parentNode.removeChild(button);
+         Buttons.parentNode.removeChild(Buttons);
+
+         let forms = document.createElement('INPUT');
+         forms.setAttribute("type", "text");
+         forms.setAttribute("value", "Please enter a name");
+         first.appendChild(forms)
+         let form = document.createElement('INPUT');
+         form.setAttribute("type", "submit");
+         form.setAttribute("value", "Submit name");
+         first.appendChild(form);
+
+         form.addEventListener('click', event => {
+           if(forms.value != 'jason'){
+             main.textContent = 'Too bad you got my name wrong, the statue crushes you with his fist. Refresh to start again.';
+             main.appendChild(forms)
+             forms.parentNode.removeChild(forms);
+             form.parentNode.removeChild(form);
+           }else if (forms.value == 'jason'){
+             main.textContent = 'The statue moved. Congratulations you can go to the gold room. This room has a big pile of gold. How much do you take? ';
+             main.appendChild(forms)
+             forms.parentNode.removeChild(forms);
+             form.parentNode.removeChild(form);
+           }
+
+
+           let number = document.createElement('INPUT');
+           number.setAttribute("type", "number");
+           number.setAttribute("value", "1");
+           first.appendChild(number)
+           let submit = document.createElement('INPUT');
+           submit.setAttribute("type", "submit");
+           submit.setAttribute("value", "Submit Number");
+           first.appendChild(submit);
+
+           submit.addEventListener('click', event => {
+             if(number.value > 100){
+               main.textContent = "You took too much and couldn't carry it, unable to escape. Refresh to try again.";
+               main.appendChild(submit)
+               submit.parentNode.removeChild(submit);
+               number.parentNode.removeChild(number);
+             }
+             else if (number.value <= 100){
+               main.textContent = 'Hurray! You won and made it out of this game!';
+               main.appendChild(submit);
+               submit.parentNode.removeChild(submit);
+               number.parentNode.removeChild(number);
+             }
+           });
+      });
+ });
+       const button3 = document.querySelector("BUTTON");
+
+       Buttons.addEventListener('click', event => {
+         main.textContent = "The bear continuously ate the honey and you got bored that you died. Refresh to start again."
+         first.appendChild(main);
+         buttons.parentNode.removeChild(buttons);
+         button.parentNode.removeChild(button);
+         Buttons.parentNode.removeChild(Buttons);
+       });
+
+    } else if (event.key =='ArrowDown') {
+      main.textContent = "The door swings open to utter darkness. You step through, but your foot can't find the floor. It's a big pit. And you're falling. AAAAAAAAAAHHHhhh. You picked your wrong door and died. Refresh page to start again."
+      first.appendChild(main);
+      document.body.removeEventListener('keydown', arrow1);
+  }
+  else{
+    main.textContent = 'You stumble around the room and die of starvation. Refresh to try again';
+    first.appendChild(main);
+      document.body.removeEventListener('keydown', arrow1);
+  }
+};
+ document.body.addEventListener('keydown', arrow1)
+
+
+
+</script>
+
+
     </main>
 
     <script src="assets/main.js"></script>

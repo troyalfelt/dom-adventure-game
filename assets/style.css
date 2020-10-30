@@ -13,11 +13,10 @@ body {
   display: flex;
   font-family: Helvetica, Arial, sans-serif;
   justify-content: center;
-  line-height: 140%;
+  line-height: 200%;
   min-height: 100vh;
 }
 
 main {
   font-size: 2rem;
 }
-
