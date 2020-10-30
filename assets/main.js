@@ -10,31 +10,33 @@ let input = document.querySelector("#input");
 let desc = document.querySelector("#desc");
 let frm = document.querySelector("#frm");
 let list = document.querySelector("#list");
+//global variable to disable arrow movement on loss
+let loss = false;
 //this submits the text in the field when you click the button
 sub.addEventListener("click", () => {
   return start(input.value);
 });
+frm.addEventListener("submit", function(event){
+  event.preventDefault();
+});
 //these blocks let you use arrow keys to move around
 window.addEventListener("keyup", function(event){
-  if (event.keyCode === 39) {
-    return start("go east");
+  if (loss == false) {
+    if (event.keyCode === 39) {
+      return start("go east");
+    } else if (event.keyCode === 37) {
+      return start("go west");
+    } else if (event.keyCode === 38) {
+      return start("go north");
+    } else if (event.keyCode === 40) {
+      return start("go south");
+    } else if (event.keyCode === 13) {
+      let temp = input.value;
+      return start(temp);
+    }
   }
-})
-window.addEventListener("keyup", function(event){
-  if (event.keyCode === 37) {
-    return start("go west");
-  }
-})
-window.addEventListener("keyup", function(event){
-  if (event.keyCode === 38) {
-    return start("go north");
-  }
-})
-window.addEventListener("keyup", function(event){
-  if (event.keyCode === 40) {
-    return start("go south");
-  }
-})
+});
+
 //bag as empty array to track items
 let bag = []
 //some global variables to track events
@@ -42,6 +44,7 @@ let goblin = true;
 let fire = true;
 let darkness = true;
 let wearingMask = false;
+
 //item descriptions
 let bread = {name : "bread", description : "A piece of stale bread, not very appetizing."};
 let jug = {name : "jug", description : "An empty jug that smells of must.", water : false}
@@ -55,18 +58,28 @@ let key = {name : "key", description : "A small key with a rusty veneer."};
 let help = "I like you to structure your inputs as verb/noun. Here are the verbs I know: Take/Attack/Wear/Light/Douse If you want to see your items, type 'open bag'. If you want to inspect an item in your bag, type 'inspect *item name*. If you want to go somewhere, type 'go east/west/north/south' or use the corresponding arrow key. ";
 //descriptions of rooms. I made these global variables because some events will change them.
 let startRoom = {items : [bread, jug], desc : "You are in a barren room with some old hay piled up in a corner to make an uncomfortable bed. The only furniture present is a table in the center of the room with some bread and an empty jug sitting on it. Doors are set in the wall in every cardinal direction."}
-let fireRoom = {items : [sword, flint], desc : "You stand in a cluttered study. Piles of books and papers written in language unknown to you are piled from the posh carpet to the stone ceiling. Along one wall, a fire roars in a hearth. You can barely make out the shape of a sword that protrudes from the bellowing flames. A box of flint rests on a rickety table. A single door leads back to the west."}
-let sphinxRoom = {items : [torch], desc : "You feel sand under your feet as you walk in this dimly lit room. A rusty metal door leads to the north. A pile of unlit torches sits on the eastern wall.Light shines from a pair of red eyes peering out of the darkness. As your eyes adjust to the gloom, you make can make out the body of a crude machine, built to resemble a sphinx. It opens its rusty jaws and a crackling voice emerges. ANSWER MY RIDDLE TRAVELER. WHAT IS A BOX WITHOUT HINGES KEY OR LID YET GOLDEN TREASURE INSIDE IS HID?  A.) A locked treasure chest!  B.) An egg  C.) A skull  D.) A bottle of beer!"}
+let fireRoom = {items : [sword, flint], desc : "You stand in a cluttered study. Piles of books and papers written in language unknown to you are piled from the posh carpet to the stone ceiling. Along one wall, a fire roars in a hearth. You can barely make out the shape of a sword that protrudes from the bellowing flames. A box of flint rests on a rickety table. A single door leads back to the west."};
+let sphinxRoom = {items : [torch], desc : "You feel sand under your feet as you walk in this dimly lit room. A rusty metal door leads to the north. A pile of unlit torches sits on the eastern wall.Light shines from a pair of red eyes peering out of the darkness. As your eyes adjust to the gloom, you make can make out the body of a crude machine, built to resemble a sphinx. It opens its rusty jaws and a crackling voice emerges. ANSWER MY RIDDLE TRAVELER. WHAT IS A BOX WITHOUT HINGES KEY OR LID YET GOLDEN TREASURE INSIDE IS HID?  A.) A locked treasure chest!  B.) An egg  C.) A skull  D.) A bottle of beer!"};
 let darkRoom = {items : [], desc : "This room is pitch black, perhaps unnaturally so. As you strain your eyes to see anything, you sense something else in the room with you. Muted light glows from a hallway to the east."}
 let fountainRoom = {items : [], desc : "You blink furiously as you step out into sunlight. You are in a beautiful, if ill-maintained, courtyard. Birds chirp down at you from the eaves. At the center of the courtyard, a fountain bubbles merrily despite the many cracks running down its side. The remains of what appears to have been a stone bench sit nearby, in no shape to be sat on."}
-let goblinRoom = {items : [], desc : "Water drips from the cobble ceiling of this musty room and drains down a rusty grate. A long hallway extends to the south. To the east stands an ornate archway. A door sits at the far west of the room. Guarding it is a hunched goblin, holding a scimitar far more resplendant than its wielder. He makes a rude gesture at you."}
-let finalRoom = {items : [], desc : "The walls in this room are an almost blinding white, and are strikingly clean compared to other rooms you've been in. A thick iron door with no discernible handle blocks your way to the east. A polished bronze placard is bolted to the wall next to it that reads THE MAN WHO LEAVES HERE MUST NOT BE THE MAN WHO ENTERED."}
-let leverRoom = {items : [], desc : "A cramped wooden room stands with a door leading eastward. It is barren save for engravings on the wall. WISE ADVENTURER SOLVE MY WORD JUMBLE    N I Y R B A"}
+let goblinRoom = {items : [], desc : "Water drips from the cobble ceiling of this musty room and drains down a rusty grate. A long hallway extends to the south. To the east stands an ornate archway. A door sits at the far west of the room. Guarding it is a hunched goblin, holding a scimitar far more resplendant than its wielder. He makes a rude gesture at you."};
+let finalRoom = {items : [], desc : "The walls in this room are an almost blinding white, and are strikingly clean compared to other rooms you've been in. A thick iron door with no discernible handle blocks your way to the east. A polished bronze placard is bolted to the wall next to it that reads THE MAN WHO LEAVES HERE MUST NOT BE THE MAN WHO ENTERED."};
+let leverRoom = {items : [], desc : "A cramped wooden room stands with a door leading eastward. It is barren save for engravings on the wall. WISE ADVENTURER SOLVE MY WORD JUMBLE:    /N I Y R B A/"}
 //variable to hold what room your in
 let currentRoom = startRoom;
 //a function that handles when the player dies
 const death = function(cause) {
-  update.textContent = cause + " Better luck next time!" ;
+  loss = true;
+  update.textContent = cause + " Better luck next time!";
+  update.style.borderStyle = 'solid';
+  update.style.borderColor = "red";
+  let restart = document.createElement("input");
+  //adds a button to restart and hides the button to input text
+  restart.type = "submit";
+  restart.value = "Restart?"
+  frm.appendChild(restart);
+  frm.removeChild(sub);
+  frm.removeChild(input);
 }
 //a function that handles when the player wins (unlikely)
 const victory = function() {
@@ -116,6 +129,8 @@ const start = function(txt) {
   //gets rid of update txt
   update.textContent = "";
   update.style.borderStyle = 'none';
+  //sets focus back to field
+  input.focus();
   //this splits the input into a noun and verb
   let verb = txt.split(" ")[0].toLowerCase();
   let noun = txt.split(" ")[1];
@@ -131,13 +146,13 @@ const start = function(txt) {
       //blocks like these govern walls and other obstacles
       if (currentRoom == sphinxRoom || currentRoom == fireRoom) {
         update.textContent = "You can't go that way!";
-        update.style.borderStyle = 'solid'
-        update.style.borderColor = 'red'
+        update.style.borderStyle = 'solid';
+        update.style.borderColor = 'red';
       } else if (currentRoom == finalRoom) {
         if (wearingMask == false) {
           update.textContent = "The door won't budge.";
-          update.style.borderStyle = 'solid'
-          update.style.borderColor = 'red'
+          update.style.borderStyle = 'solid';
+          update.style.borderColor = 'red';
         } else {
           //if your wearing the mask, you win by exiting the last room
           return victory();
@@ -151,16 +166,16 @@ const start = function(txt) {
     } else if (noun == "west") {
       if (currentRoom == darkRoom || currentRoom == fountainRoom || currentRoom == leverRoom || currentRoom == sphinxRoom) {
         update.textContent = "You can't go that way!";
-        update.style.borderStyle = 'solid'
-        update.style.borderColor = 'red'
+        update.style.borderStyle = 'solid';
+        update.style.borderColor = 'red';
       } else if (currentRoom == goblinRoom && goblin == true) {
         update.textContent = "The goblin lazily brandishes his sword at you. You can't go that way.";
-        update.style.borderStyle = 'solid'
-        update.style.borderColor = 'red'
+        update.style.borderStyle = 'solid';
+        update.style.borderColor = 'red';
       } else if (currentRoom == startRoom && darkness == true) {
         update.textContent = "The room is pitch black and you hear the sound of heavy breathing. You quickly retreat the way you came.";
-        update.style.borderStyle = 'solid'
-        update.style.borderColor = 'red'
+        update.style.borderStyle = 'solid';
+        update.style.borderColor = 'red';
       } else {
         x -=1;
       return loc(x, y);
@@ -168,16 +183,16 @@ const start = function(txt) {
     } else if (noun == "south") {
       if (currentRoom == fireRoom || currentRoom == finalRoom || currentRoom == sphinxRoom || currentRoom == leverRoom || currentRoom ==fountainRoom) {
         update.textContent = "You can't go that way!";
-        update.style.borderStyle = 'solid'
-        update.style.borderColor = 'red'
+        update.style.borderStyle = 'solid';
+        update.style.borderColor = 'red';
       } else if (currentRoom == darkRoom) {
         if (bag.includes(key) == true) {
           y -= 1;
           return loc(x, y);
         } else {
           update.textContent= "The door is locked."
-          update.style.borderStyle = 'solid'
-          update.style.borderColor = 'red'
+          update.style.borderStyle = 'solid';
+          update.style.borderColor = 'red';
         }
       } else {
       y -= 1;
@@ -186,8 +201,8 @@ const start = function(txt) {
     } else if (noun == "north") {
       if (currentRoom == finalRoom || currentRoom == goblinRoom || currentRoom == leverRoom || currentRoom == fireRoom) {
         update.textContent = "You can't go that way!";
-        update.style.borderStyle = 'solid'
-        update.style.borderColor = 'red'
+        update.style.borderStyle = 'solid';
+        update.style.borderColor = 'red';
       } else {
       y += 1;
       return loc(x,y);
@@ -202,12 +217,12 @@ const start = function(txt) {
         str.push(" " + i.name);
       }
       update.textContent = "In your bag you have" + str
-      update.style.borderStyle = 'solid'
-      update.style.borderColor = 'blue'
+      update.style.borderStyle = 'solid';
+      update.style.borderColor = 'blue';
     } else {
       update.textContent = "You don't have anything in your bag.";
-      update.style.borderStyle = 'solid'
-      update.style.borderColor = 'red'
+      update.style.borderStyle = 'solid';
+      update.style.borderColor = 'red';
     }
   }
   //these take blocks push items into the bag if they're in the room
@@ -216,15 +231,15 @@ const start = function(txt) {
       if (currentRoom.items.includes(bread) == true) {
         bag.push(bread);
         update.textContent = "You put some bread in your bag.";
-        update.style.borderStyle = 'solid'
-        update.style.borderColor = 'blue'
+        update.style.borderStyle = 'solid';
+        update.style.borderColor = 'blue';
       }
     } else if (noun == "jug") {
       if (currentRoom.items.includes(jug) == true) {
         bag.push(jug);
         update.textContent = "You put the jug in your bag.";
-        update.style.borderStyle = 'solid'
-        update.style.borderColor = 'blue'
+        update.style.borderStyle = 'solid';
+        update.style.borderColor = 'blue';
         //change room desc to no longer mention jug
         startRoom.desc = "You are in a barren room with some old hay piled up in a corner to make an uncomfortable bed. The only furniture present is a table in the center of the room with some bread sitting on it. Doors are set in the wall in every cardinal direction.";
       }
@@ -235,12 +250,12 @@ const start = function(txt) {
           update.textContent = "You scoop some water out of the fountain with the jug.";
           jug.water = true;
           jug.description = "An old jug, filled to the brim with grimy water."
-          update.style.borderStyle = 'solid'
-          update.style.borderColor = 'blue'
+          update.style.borderStyle = 'solid';
+          update.style.borderColor = 'blue';
         } else {
           update.textContent = "You don't have anything to carry it with.";
-          update.style.borderStyle = 'solid'
-          update.style.borderColor = 'red'
+          update.style.borderStyle = 'solid';
+          update.style.borderColor = 'red';
         }
       }
     } else if (noun == "flint") {
@@ -255,14 +270,14 @@ const start = function(txt) {
         //checks if fire is out yet
         if (fire == true) {
           update.textContent = "As you reach for the hilt of the sword, the red flames lash out at you unnaturally. You pull your hand away.";
-          update.style.borderStyle = 'solid'
-          update.style.borderColor = 'red'
+          update.style.borderStyle = 'solid';
+          update.style.borderColor = 'red';
         } else {
           bag.push(sword);
           update.textContent = "You pull the sword from the smoldering logs.";
           fireRoom.desc = "You stand in a cluttered study. Piles of books and papers written in language unknown to you are piled from the posh carpet to the stone ceiling. Along one wall, a pile of damp logs smolder in a hearth. A box of flint rests on a rickety table. A single door leads back to the west."
-          update.style.borderStyle = 'solid'
-          update.style.borderColor = 'blue'
+          update.style.borderStyle = 'solid';
+          update.style.borderColor = 'blue';
         }
       }
     } else if (noun == "key") {
