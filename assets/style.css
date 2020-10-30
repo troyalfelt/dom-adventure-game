@@ -21,5 +21,30 @@ main {
   font-size: 2rem;
 }
 #sub {
-  width: 200px;
+  width: 100px;
+}
+#bigdiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  line-height: 1.2;
+}
+#desc {
+  border-style: solid;
+  border-color: black;
+  margin: 10px;
+  padding: 15px
+}
+#update {
+  border-style: solid;
+  border-color: purple;
+  padding: 10px;
+  text-align: center;
+
+}
+#frm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
