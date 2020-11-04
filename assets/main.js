@@ -22,17 +22,17 @@ frm.addEventListener("submit", function(event){
 //these blocks let you use arrow keys to move around
 window.addEventListener("keyup", function(event){
   if (loss == false) {
-    if (event.keyCode === 39) {
-      return start("go east");
-    } else if (event.keyCode === 37) {
-      return start("go west");
-    } else if (event.keyCode === 38) {
-      return start("go north");
-    } else if (event.keyCode === 40) {
-      return start("go south");
-    } else if (event.keyCode === 13) {
-      let temp = input.value;
-      return start(temp);
+    switch (event.key) {
+      case "ArrowLeft":
+        return start("go west");
+      case "ArrowUp":
+        return start("go north");
+      case "ArrowRight":
+        return start("go east");
+      case "ArrowDown":
+        return start("go south");
+      case "Enter":
+        return start(input.value);
     }
   }
 });
