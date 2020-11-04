@@ -17,7 +17,7 @@ sub.addEventListener("click", () => {
   return start(input.value);
 });
 frm.addEventListener("submit", function(event){
-  event.preventDefault();
+  return start;
 });
 //these blocks let you use arrow keys to move around
 window.addEventListener("keyup", function(event){
@@ -74,6 +74,7 @@ const death = function(cause) {
   update.style.borderStyle = 'solid';
   update.style.borderColor = "red";
   let restart = document.createElement("input");
+
   //adds a button to restart and hides the button to input text
   restart.type = "submit";
   restart.value = "Restart?"
