@@ -212,13 +212,15 @@ const start = function(txt) {
   } else if (verb == "open") {
     if (noun == "bag") {
       if (bag.length > 0) {
-      let str = [];
+      let str = "<p>In your bag:</p>";
       for (i of bag) {
-        str.push(" " + i.name);
+        str += ("<p>" + i.name + "</p>");
       }
-      update.textContent = "In your bag you have" + str
+      update.innerHTML = str;
       update.style.borderStyle = 'solid';
       update.style.borderColor = 'blue';
+	  update.style.lineHeight = "50%";
+	  update.style.fontSize = "0.7em";
     } else {
       update.textContent = "You don't have anything in your bag.";
       update.style.borderStyle = 'solid';

@@ -40,9 +40,11 @@ main {
   border-style: solid;
   border-color: purple;
   padding: 10px;
+  margin: 10px;
   text-align: center;
-
+  height: auto;
 }
+
 #frm {
   display: flex;
   flex-direction: column;
